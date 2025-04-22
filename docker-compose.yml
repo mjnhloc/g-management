@@ -1,8 +1,22 @@
 version: '3.8'
 services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: g-management-app
+    ports:
+      - "8080:8080"
+    environment:
+      DSN: gadmin:gpassword@tcp(mysql:3306)/gdb
+    depends_on:
+      - mysql
+    volumes:
+      - .:/app
+
   mysql:
     image: mysql:8
-    container_name: g-management
+    container_name: g-management-mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: gdb
@@ -10,23 +24,7 @@ services:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./mysql-init:/docker-entrypoint-initdb.d  # runs SQL files on first startup
-
-  # backend:
-  #   build:
-  #     context: ./backend
-  #     dockerfile: Dockerfile
-  #   container_name: gym-backend
-  #   ports:
-  #     - "8080:8080"
-  #   environment:
-  #     DB_HOST: mysql
-  #     DB_PORT: 3306
-  #     DB_USER: root
-  #     DB_PASSWORD: rootpassword
-  #     DB_NAME: gymdb
-  #   depends_on:
-  #     - mysql
+      - ${PWD}/internal/migrations:/docker-entrypoint-initdb.d # runs SQL files on first startup
 
 volumes:
   mysql_data:
