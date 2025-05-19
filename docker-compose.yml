@@ -13,6 +13,7 @@ services:
       - mysql
     volumes:
       - .:/app
+    command: ["go", "run", "./cmd/main.go"]
 
   mysql:
     image: mysql:8
@@ -24,7 +25,7 @@ services:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
-      - ${PWD}/internal/migrations:/docker-entrypoint-initdb.d # runs SQL files on first startup
+      # - ${PWD}/internal/migrations:/docker-entrypoint-initdb.d # runs SQL files on first startup
 
 volumes:
   mysql_data:

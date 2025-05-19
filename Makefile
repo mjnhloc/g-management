@@ -1,10 +1,11 @@
-# MIGRATE_CMD=migrate -path db/migrations -database "mysql://gadmin:gpassword@tcp(127.0.0.1:3306)/gdb"
+.PHONY: migrate-up
+migrate-up:
+	migrate -path db/migrations -database "mysql://gadmin:gpassword@tcp(127.0.0.1:3306)/gdb" up
 
-# migrate-up:
-# 	$(MIGRATE_CMD) up
+.PHONY: migrate-down
+migrate-up:
+	migrate -path db/migrations -database "mysql://gadmin:gpassword@tcp(127.0.0.1:3306)/gdb" down
 
-# migrate-down:
-# 	$(MIGRATE_CMD) down
-
+.PHONY: run-main
 run-main:
-	docker-compose up --build -d
+	docker-compose up -d
