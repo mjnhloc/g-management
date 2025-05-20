@@ -1,17 +1,17 @@
 package container
 
 import (
-	"g-management/internal/models/members/pkg/repository"
+	"g-management/internal/models/payments/pkg/repository"
 
 	"gorm.io/gorm"
 )
 
 type RepositoryContainer struct {
-	MembersRepository repository.MembersRepositoryInterface
+	PaymentsRepository repository.PaymentsRepositoryInterface
 }
 
 func NewRepositoryContainer(db *gorm.DB) RepositoryContainer {
 	return RepositoryContainer{
-		MembersRepository: repository.NewMembersRepository(db),
+		PaymentsRepository: repository.NewPaymentsRepository(db),
 	}
 }
