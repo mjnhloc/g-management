@@ -2,7 +2,7 @@ version: '3.8'
 services:
   app:
     build:
-      context: .
+      context: ./backend
       dockerfile: Dockerfile
     container_name: g-management-app
     ports:
@@ -12,7 +12,7 @@ services:
     depends_on:
       - mysql
     volumes:
-      - .:/app
+      - ./backend:/app
     command: ["go", "run", "./cmd/main.go"]
 
   mysql:
@@ -26,6 +26,20 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
       # - ${PWD}/internal/migrations:/docker-entrypoint-initdb.d # runs SQL files on first startup
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: g-management-frontend
+    ports:
+      - "3000:3000"
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./frontend:/frontend
+    working_dir: /frontend
+    command: ["npm", "start"]
 
 volumes:
   mysql_data:
