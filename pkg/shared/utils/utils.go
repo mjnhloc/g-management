@@ -269,39 +269,6 @@ func CheckSortEnumFormat(sort string, fields []string) string {
 	return ""
 }
 
-// func GetKeycloakUserIDByHeader(c *gin.Context) (string, error) {
-// 	authHeader := c.Request.Header.Get("Authorization")
-// 	var token string
-// 	if authHeader != "" && strings.Index(authHeader, jwt.BearerAuthorizationPrefix) == 0 {
-// 		token = authHeader[7:]
-// 	} else {
-// 		return "", nil
-// 	}
-
-// 	isAuth0Iss := c.GetString("auth0_user_id") != ""
-
-// 	keyCloakUserID, err := jwt.GetKeycloakUserIDByToken(token, isAuth0Iss)
-// 	if err != nil {
-// 		return "", err
-// 	}
-// 	return keyCloakUserID, nil
-// }
-
-// func GetRealmNameByHeader(c *gin.Context) (string, error) {
-// 	authHeader := c.Request.Header.Get("Authorization")
-// 	var token string
-// 	if authHeader != "" && strings.Index(authHeader, jwt.BearerAuthorizationPrefix) == 0 {
-// 		token = authHeader[7:]
-// 	} else {
-// 		return "", nil
-// 	}
-// 	realmName, err := jwt.GetRealmNameByToken(token)
-// 	if err != nil {
-// 		return "", err
-// 	}
-// 	return realmName, nil
-// }
-
 // GetUserIDByHeader comment
 // en: Extract user_id (auth0_user_id, keycloak_user_id) information from Context
 // en: Can only be used when the request has been verified by the middleware.
@@ -311,24 +278,6 @@ func CheckSortEnumFormat(sort string, fields []string) string {
 // 		return jwt.FanclubMemberUserID{}, err
 // 	}
 // 	return userID, nil
-// }
-
-// GetFanclubGroupIDByHeader comment
-// en: Get fanclub_group_id from header.access_token
-// en: only Auth0 access token has nfc_group_id
-// func GetFanclubGroupIDByHeader(c *gin.Context) (int, error) {
-// 	authHeader := c.Request.Header.Get("Authorization")
-// 	var token string
-// 	if authHeader != "" && strings.Index(authHeader, jwt.BearerAuthorizationPrefix) == 0 {
-// 		token = authHeader[7:]
-// 	} else {
-// 		return 0, nil
-// 	}
-// 	fcGroupID, err := jwt.GetFanclubGroupIDByToken(token)
-// 	if err != nil {
-// 		return 0, err
-// 	}
-// 	return fcGroupID, nil
 // }
 
 // IsAuth0IssByHeader comment
@@ -1056,24 +1005,6 @@ func GetUserIDConditions(auth0UserID, keycloakUserID string) map[string]interfac
 
 	return conditions
 }
-
-// GetGroupConditions comment
-// en: get group map query conditions
-// func GetGroupConditions(fanclubGroupId int, realmName string) map[string]interface{} {
-// 	conditions := map[string]interface{}{}
-// 	if fanclubGroupId != 0 {
-// 		conditions["id"] = fanclubGroupId
-// 	} else {
-// 		newRealmName := realmName
-// 		if strings.Contains(newRealmName, fanclubMembersUtils.CPRealmSuffix) {
-// 			newRealmName = strings.TrimSuffix(newRealmName, fanclubMembersUtils.CPRealmSuffix)
-// 		}
-
-// 		conditions["realm_name"] = newRealmName
-// 	}
-
-// 	return conditions
-// }
 
 // FindIndexByColumnKey comment
 // en: return index of element
