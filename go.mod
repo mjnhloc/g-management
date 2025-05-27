@@ -10,6 +10,7 @@ require (
 	github.com/graphql-go/graphql v0.8.1
 	github.com/joho/godotenv v1.5.1
 	github.com/microcosm-cc/bluemonday v1.0.27
+	github.com/mitchellh/mapstructure v1.5.0
 	github.com/rivo/uniseg v0.4.7
 	github.com/xeipuuv/gojsonschema v1.2.0
 	golang.org/x/exp v0.0.0-20250506013437-ce4c2cf36ca6

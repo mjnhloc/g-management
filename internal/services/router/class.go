@@ -10,5 +10,5 @@ func BindClassRoutes(
 	router *gin.RouterGroup,
 	handler *class.HTTPHandler,
 ) {
-	router.GET("/", handler.GetAllClasses)
+	router.GET("/all", handler.GetAllClasses)
 }

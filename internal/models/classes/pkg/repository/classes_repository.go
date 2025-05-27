@@ -4,12 +4,14 @@ import (
 	"context"
 
 	"g-management/internal/models/classes/pkg/entity"
+	"g-management/pkg/shared/utils"
 
 	"gorm.io/gorm"
 )
 
 type ClassesRepositoryInterface interface {
 	TakeByConditions(ctx context.Context, conditions map[string]interface{}) (entity.Classes, error)
+	Create(ctx context.Context, attributes map[string]interface{}) (entity.Classes, error)
 }
 
 type classesRepository struct {
@@ -30,5 +32,21 @@ func (c *classesRepository) TakeByConditions(
 	var class entity.Classes
 	cdb := c.DB.WithContext(ctx)
 	err := cdb.Model(&class).Where(conditions).Take(&entity.Classes{}).Error
+	return class, err
+}
+
+// en: Create function to create a new class with given attributes
+func (c *classesRepository) Create(
+	ctx context.Context,
+	attributes map[string]interface{},
+) (entity.Classes, error) {
+	var class entity.Classes
+	err := utils.MapToStruct(attributes, &class)
+	if err != nil {
+		return entity.Classes{}, err
+	}
+
+	cdb := c.DB.WithContext(ctx)
+	err = cdb.Create(&class).Error
 	return class, err
 }
