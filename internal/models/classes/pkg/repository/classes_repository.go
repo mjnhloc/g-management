@@ -12,6 +12,7 @@ import (
 type ClassesRepositoryInterface interface {
 	TakeByConditions(ctx context.Context, conditions map[string]interface{}) (entity.Classes, error)
 	Create(ctx context.Context, attributes map[string]interface{}) (entity.Classes, error)
+	FindByConditions(ctx context.Context, conditions map[string]interface{}) ([]entity.Classes, error)
 }
 
 type classesRepository struct {
@@ -49,4 +50,15 @@ func (c *classesRepository) Create(
 	cdb := c.DB.WithContext(ctx)
 	err = cdb.Create(&class).Error
 	return class, err
+}
+
+// en: FindByConditions function to find classes by conditions
+func (c *classesRepository) FindByConditions(
+	ctx context.Context,
+	conditions map[string]interface{},
+) ([]entity.Classes, error) {
+	var classes []entity.Classes
+	cdb := c.DB.WithContext(ctx)
+	err := cdb.Model(&entity.Classes{}).Where(conditions).Find(&classes).Error
+	return classes, err
 }

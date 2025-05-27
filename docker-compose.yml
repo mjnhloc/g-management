@@ -11,9 +11,9 @@ services:
       DSN: gadmin:gpassword@tcp(mysql:3306)/gdb
     depends_on:
       - mysql
-    volumes:
-      - .:/app
-    command: ["go", "run", "./cmd/main.go"]
+    # volumes:
+    #   - .:/app
+    # command: ["go", "run", "./cmd/main.go"]
 
   mysql:
     image: mysql:8

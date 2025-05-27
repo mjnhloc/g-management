@@ -17,12 +17,12 @@ type HandlerContainer struct {
 }
 
 func NewHandlerContainer(
-	graphqlInput graphql.Schema,
+	graphql graphql.Schema,
 	db *gorm.DB,
 ) HandlerContainer {
 	base := baseHandler.NewApplicationHandler()
 
-	classContainer := classHandler.NewHTTPHandler(*base)
+	classContainer := classHandler.NewHTTPHandler(*base, graphql)
 	memberContainer := memberHandler.NewHTTPHandler(*base)
 	trainerContainer := trainerHandler.NewHTTPHandler(*base)
 
