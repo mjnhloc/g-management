@@ -2,6 +2,7 @@ package container
 
 import (
 	"g-management/internal/services/pkg/graphql/mutation"
+	"g-management/internal/services/pkg/graphql/output"
 	"g-management/internal/services/pkg/graphql/query"
 
 	"github.com/graphql-go/graphql"
@@ -13,7 +14,13 @@ func NewGraphqlSchema(
 	db *gorm.DB,
 ) (graphql.Schema, error) {
 	outputTypes := make(map[string]*graphql.Object)
-	for _, graphqlType := range []*graphql.Object{} {
+	for _, graphqlType := range []*graphql.Object{
+		output.NewClassType(
+			outputTypes,
+			repositories.TrainersContainer.TrainersRepository,
+		),
+		output.NewTrainerType(),
+	} {
 		outputTypes[graphqlType.Name()] = graphqlType
 	}
 
@@ -33,6 +40,8 @@ func NewGraphqlSchema(
 				"post_class": mutation.NewPostClassMutation(
 					outputTypes,
 					db,
+					repositories.TrainersContainer.TrainersRepository,
+					repositories.ClassesContainer.ClassesRepository,
 				),
 			},
 		}),

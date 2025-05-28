@@ -2,11 +2,15 @@ package output
 
 import (
 	"g-management/internal/models/classes/pkg/entity"
+	"g-management/internal/models/trainers/pkg/repository"
 
 	"github.com/graphql-go/graphql"
 )
 
-func NewClassType() *graphql.Object {
+func NewClassType(
+	types map[string]*graphql.Object,
+	trainersRepository repository.TrainersRepositoryInterface,
+) *graphql.Object {
 	return graphql.NewObject(graphql.ObjectConfig{
 		Name: "class",
 		Fields: graphql.FieldsThunk(func() graphql.Fields {
@@ -48,6 +52,14 @@ func NewClassType() *graphql.Object {
 							return nil, nil
 						}
 						return *params.Source.(entity.Classes).Description, nil
+					},
+				},
+				"trainer": &graphql.Field{
+					Type: types["trainer"],
+					Resolve: func(params graphql.ResolveParams) (interface{}, error) {
+						return trainersRepository.TakeByConditions(params.Context, map[string]interface{}{
+							"id": params.Source.(entity.Classes).TrainerID,
+						})
 					},
 				},
 			}

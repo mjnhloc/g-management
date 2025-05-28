@@ -3,9 +3,9 @@ package infrastructure
 import (
 	"context"
 	"database/sql"
-	"fmt"
-	"log"
 	"os"
+
+	"g-management/pkg/log"
 
 	"github.com/joho/godotenv"
 	mysqlDriver "gorm.io/driver/mysql"
@@ -28,14 +28,10 @@ func NewDatabase() (db *gorm.DB, master *sql.DB, err error) {
 
 	err = godotenv.Load()
 	if err != nil {
-		log.Println("Error loading .env file")
-	}
-	dsn := os.Getenv("DSN")
-	if dsn == "" {
-		return nil, nil, fmt.Errorf("DSN is not set in the environment: %v", err)
+		log.Error(context.Background(), "Error loading .env file", "error", err)
 	}
 
-	database, err := sql.Open("mysql", dsn)
+	database, err := sql.Open("mysql", os.Getenv("DSN"))
 	if err != nil {
 		return nil, nil, err
 	}
@@ -73,6 +69,6 @@ func PingCtx(ctx context.Context, db *gorm.DB) error {
 
 func CloseDB(db *sql.DB) {
 	if err := db.Close(); err != nil {
-		log.Printf("Error closing the database: %v", err)
+		log.Error(context.Background(), "Error closing the database", "error", err)
 	}
 }
