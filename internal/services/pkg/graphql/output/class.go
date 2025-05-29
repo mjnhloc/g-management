@@ -1,6 +1,8 @@
 package output
 
 import (
+	"log"
+
 	"g-management/internal/models/classes/pkg/entity"
 	"g-management/internal/models/trainers/pkg/repository"
 
@@ -54,12 +56,24 @@ func NewClassType(
 						return *params.Source.(entity.Classes).Description, nil
 					},
 				},
+				"trainer_id": &graphql.Field{
+					Type: BigInt,
+					Resolve: func(params graphql.ResolveParams) (interface{}, error) {
+						return params.Source.(entity.Classes).TrainerID, nil
+					},
+				},
 				"trainer": &graphql.Field{
 					Type: types["trainer"],
 					Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-						return trainersRepository.TakeByConditions(params.Context, map[string]interface{}{
+						log.Printf("Resolving trainer for TrainerID: %v", params.Source.(entity.Classes).TrainerID)
+						trainer, err := trainersRepository.TakeByConditions(params.Context, map[string]interface{}{
 							"id": params.Source.(entity.Classes).TrainerID,
 						})
+						if err != nil {
+							return nil, err
+						}
+
+						return trainer, nil
 					},
 				},
 			}

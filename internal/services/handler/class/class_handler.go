@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	PostClass = "post_class.json"
+	PostClass = "class/post_class.json"
 )
 
 type HTTPHandler struct {

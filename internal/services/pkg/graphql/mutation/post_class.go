@@ -1,7 +1,7 @@
 package mutation
 
 import (
-	"time"
+	"log"
 
 	"g-management/internal/models/classes/pkg/entity"
 	classesRepo "g-management/internal/models/classes/pkg/repository"
@@ -34,6 +34,7 @@ func NewPostClassMutation(
 					return nil, err
 				}
 
+				log.Printf("trainer id: %v", trainerID)
 				classAttributes["trainer_id"] = trainerID
 			}
 
@@ -44,20 +45,14 @@ func NewPostClassMutation(
 			}
 
 			if classInputAttributes["schedule"] != nil {
-				scheduleStr := classInputAttributes["description"].(string)
-				schedule, err := time.Parse(utils.FormatDateTimeJST, scheduleStr)
-				if err != nil {
-					return nil, err
-				}
-
-				classAttributes["schedule"] = schedule
+				classAttributes["schedule"] = classInputAttributes["schedule"].(string)
 			}
 
 			if classInputAttributes["duration"] != nil {
-				classAttributes["duration"] = classInputAttributes["duration"].(int)
+				classAttributes["duration"] = classInputAttributes["duration"].(float64)
 			}
 			if classInputAttributes["max_capacity"] != nil {
-				classAttributes["max_capacity"] = classInputAttributes["max_capacity"].(int)
+				classAttributes["max_capacity"] = classInputAttributes["max_capacity"].(float64)
 			}
 			classAttributes["description"] = classInputAttributes["description"].(string)
 

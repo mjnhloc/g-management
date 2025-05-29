@@ -29,6 +29,6 @@ func (m *membershipsRepository) TakeByConditions(
 ) (entity.Memberships, error) {
 	var membership entity.Memberships
 	cdb := m.DB.WithContext(ctx)
-	err := cdb.Model(&membership).Where(conditions).Take(&entity.Memberships{}).Error
+	err := cdb.Where(conditions).Take(&membership).Error
 	return membership, err
 }

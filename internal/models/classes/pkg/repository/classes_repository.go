@@ -33,7 +33,7 @@ func (c *classesRepository) TakeByConditions(
 ) (entity.Classes, error) {
 	var class entity.Classes
 	cdb := c.DB.WithContext(ctx)
-	err := cdb.Model(&class).Where(conditions).Take(&entity.Classes{}).Error
+	err := cdb.Where(conditions).Take(&class).Error
 	return class, err
 }
 
@@ -60,7 +60,7 @@ func (c *classesRepository) FindByConditions(
 ) ([]entity.Classes, error) {
 	var classes []entity.Classes
 	cdb := c.DB.WithContext(ctx)
-	err := cdb.Model(&entity.Classes{}).Where(conditions).Find(&classes).Error
+	err := cdb.Where(conditions).Find(&classes).Error
 	return classes, err
 }
 

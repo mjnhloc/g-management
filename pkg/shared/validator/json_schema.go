@@ -18,7 +18,7 @@ type JsonSchemaValidator struct {
 
 func NewJsonSchemaValidator() (*JsonSchemaValidator, error) {
 	validator := &JsonSchemaValidator{
-		basePath: os.Getenv("DW_SCHEMAS_PATH") + "/" + os.Getenv("DW_SERVICE_NAME"),
+		basePath: os.Getenv("GM_SCHEMAS_PATH"),
 		schemas:  make(map[string]*gojsonschema.Schema),
 	}
 
