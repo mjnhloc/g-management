@@ -1,9 +1,8 @@
 package class
 
 import (
-	"net/http"
-
 	baseDto "g-management/internal/services/pkg/dto"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/graphql-go/graphql"

@@ -1,10 +1,9 @@
 package output
 
 import (
-	"log"
-
 	"g-management/internal/models/classes/pkg/entity"
 	"g-management/internal/models/trainers/pkg/repository"
+	"g-management/pkg/shared/utils"
 
 	"github.com/graphql-go/graphql"
 )
@@ -50,10 +49,7 @@ func NewClassType(
 				"description": &graphql.Field{
 					Type: graphql.String,
 					Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-						if params.Source.(entity.Classes).Description == nil {
-							return nil, nil
-						}
-						return *params.Source.(entity.Classes).Description, nil
+						return utils.DerefString(params.Source.(entity.Classes).Description), nil
 					},
 				},
 				"trainer_id": &graphql.Field{
@@ -65,7 +61,6 @@ func NewClassType(
 				"trainer": &graphql.Field{
 					Type: types["trainer"],
 					Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-						log.Printf("Resolving trainer for TrainerID: %v", params.Source.(entity.Classes).TrainerID)
 						trainer, err := trainersRepository.TakeByConditions(params.Context, map[string]interface{}{
 							"id": params.Source.(entity.Classes).TrainerID,
 						})

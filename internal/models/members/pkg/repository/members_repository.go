@@ -12,6 +12,7 @@ import (
 type MembersRepositoryInterface interface {
 	TakeByConditions(ctx context.Context, conditions map[string]interface{}) (entity.Members, error)
 	Create(ctx context.Context, attributes map[string]interface{}) (entity.Members, error)
+	FindByConditions(ctx context.Context, conditions map[string]interface{}) ([]entity.Members, error)
 }
 
 type membersRepository struct {
@@ -49,4 +50,15 @@ func (m *membersRepository) Create(
 	cdb := m.DB.WithContext(ctx)
 	err = cdb.Create(&member).Error
 	return member, err
+}
+
+// en: FindByConditions function to find members by conditions
+func (m *membersRepository) FindByConditions(
+	ctx context.Context,
+	conditions map[string]interface{},
+) ([]entity.Members, error) {
+	var members []entity.Members
+	cdb := m.DB.WithContext(ctx)
+	err := cdb.Where(conditions).Find(&members).Error
+	return members, err
 }

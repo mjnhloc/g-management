@@ -27,9 +27,9 @@ func NewHandlerContainer(
 
 	classContainer := classHandler.NewHTTPHandler(*base, graphql)
 
-	memberContainer := memberHandler.NewHTTPHandler(*base)
+	memberContainer := memberHandler.NewHTTPHandler(*base, graphql)
 
-	trainerContainer := trainerHandler.NewHTTPHandler(*base)
+	trainerContainer := trainerHandler.NewHTTPHandler(*base, graphql)
 
 	return HandlerContainer{
 		Classes:  classContainer,

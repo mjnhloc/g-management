@@ -32,6 +32,14 @@ func NewGraphqlSchema(
 					outputTypes,
 					repositories.ClassesContainer.ClassesRepository,
 				),
+				"get_all_members": query.NewGetAllMembersQuery(
+					outputTypes,
+					repositories.MembersContainer.MembersRepository,
+				),
+				"get_all_trainers": query.NewGetAllTrainersQuery(
+					outputTypes,
+					repositories.TrainersContainer.TrainersRepository,
+				),
 			},
 		}),
 		Mutation: graphql.NewObject(graphql.ObjectConfig{

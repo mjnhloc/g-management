@@ -1,51 +1,51 @@
 package output
 
 import (
-	"g-management/internal/models/trainers/pkg/entity"
+	"g-management/internal/models/members/pkg/entity"
 	"g-management/pkg/shared/utils"
 
 	"github.com/graphql-go/graphql"
 )
 
-func NewTrainerType() *graphql.Object {
+func NewMemberType() *graphql.Object {
 	return graphql.NewObject(graphql.ObjectConfig{
-		Name: "trainer",
+		Name: "member",
 		Fields: graphql.FieldsThunk(func() graphql.Fields {
 			return graphql.Fields{
 				"id": &graphql.Field{
 					Type: BigInt,
 					Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-						return params.Source.(entity.Trainers).ID, nil
+						return params.Source.(entity.Members).ID, nil
 					},
 				},
 				"name": &graphql.Field{
 					Type: graphql.String,
 					Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-						return params.Source.(entity.Trainers).Name, nil
+						return params.Source.(entity.Members).Name, nil
 					},
 				},
 				"email": &graphql.Field{
 					Type: graphql.String,
 					Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-						return params.Source.(entity.Trainers).Email, nil
+						return utils.DerefString(params.Source.(entity.Members).Email), nil
 					},
 				},
-				"phone_number": &graphql.Field{
+				"phone": &graphql.Field{
 					Type: graphql.String,
 					Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-						return params.Source.(entity.Trainers).Phone, nil
+						return params.Source.(entity.Members).Phone, nil
 					},
 				},
-				"specialization": &graphql.Field{
+				"date_of_birth": &graphql.Field{
 					Type: graphql.String,
 					Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-						return utils.DerefString(params.Source.(entity.Trainers).Specialization), nil
+						return utils.DerefString(params.Source.(entity.Members).DateOfBirth), nil
 					},
 				},
-				"hired_at": &graphql.Field{
-					Type: graphql.String,
+				"is_active": &graphql.Field{
+					Type: graphql.Boolean,
 					Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-						return params.Source.(entity.Trainers).HiredAt, nil
+						return params.Source.(entity.Members).IsActive, nil
 					},
 				},
 			}

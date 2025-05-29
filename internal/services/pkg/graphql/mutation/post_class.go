@@ -1,8 +1,6 @@
 package mutation
 
 import (
-	"log"
-
 	"g-management/internal/models/classes/pkg/entity"
 	classesRepo "g-management/internal/models/classes/pkg/repository"
 	"g-management/internal/models/trainers/pkg/repository"
@@ -34,7 +32,6 @@ func NewPostClassMutation(
 					return nil, err
 				}
 
-				log.Printf("trainer id: %v", trainerID)
 				classAttributes["trainer_id"] = trainerID
 			}
 

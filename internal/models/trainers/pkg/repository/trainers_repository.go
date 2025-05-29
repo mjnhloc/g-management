@@ -10,6 +10,7 @@ import (
 
 type TrainersRepositoryInterface interface {
 	TakeByConditions(ctx context.Context, conditions map[string]interface{}) (entity.Trainers, error)
+	FindByConditions(ctx context.Context, conditions map[string]interface{}) ([]entity.Trainers, error)
 }
 
 type trainersRepository struct {
@@ -31,4 +32,15 @@ func (t *trainersRepository) TakeByConditions(
 	cdb := t.DB.WithContext(ctx)
 	err := cdb.Where(conditions).Take(&trainer).Error
 	return trainer, err
+}
+
+// en: FindByConditions function to find trainers by conditions
+func (t *trainersRepository) FindByConditions(
+	ctx context.Context,
+	conditions map[string]interface{},
+) ([]entity.Trainers, error) {
+	var trainers []entity.Trainers
+	cdb := t.DB.WithContext(ctx)
+	err := cdb.Where(conditions).Find(&trainers).Error
+	return trainers, err
 }
