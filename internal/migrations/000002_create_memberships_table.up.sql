@@ -4,8 +4,6 @@ CREATE TABLE `memberships` (
     `membership_type` ENUM('monthly', 'quarter', 'annual') NOT NULL,
     `start_date` DATE NOT NULL,
     `end_date` DATE NOT NULL,
-    `price` INT(11) UNSIGNED  NOT NULL,
-    `payment_status` ENUM('paid', 'pending', 'overdue') DEFAULT 'pending',
     `is_active` TINYINT(1) NOT NULL DEFAULT 1,
     `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

@@ -29,6 +29,6 @@ func (p *paymentsRepository) TakeByConditions(
 ) (entity.Payments, error) {
 	var payment entity.Payments
 	pdb := p.DB.WithContext(ctx)
-	err := pdb.Model(&payment).Where(conditions).Take(&entity.Payments{}).Error
+	err := pdb.Where(conditions).Take(&payment).Error
 	return payment, err
 }

@@ -1,0 +1,3 @@
+CREATE USER IF NOT EXISTS 'gadmin'@'%' IDENTIFIED BY 'gpassword';
+GRANT ALL PRIVILEGES ON gdb.* TO 'gadmin'@'%';
+FLUSH PRIVILEGES;

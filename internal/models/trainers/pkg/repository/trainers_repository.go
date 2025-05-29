@@ -29,6 +29,6 @@ func (t *trainersRepository) TakeByConditions(
 ) (entity.Trainers, error) {
 	var trainer entity.Trainers
 	cdb := t.DB.WithContext(ctx)
-	err := cdb.Model(&trainer).Where(conditions).Take(&entity.Trainers{}).Error
+	err := cdb.Where(conditions).Take(&trainer).Error
 	return trainer, err
 }

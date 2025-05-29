@@ -12,6 +12,8 @@ import (
 type ClassesRepositoryInterface interface {
 	TakeByConditions(ctx context.Context, conditions map[string]interface{}) (entity.Classes, error)
 	Create(ctx context.Context, attributes map[string]interface{}) (entity.Classes, error)
+	FindByConditions(ctx context.Context, conditions map[string]interface{}) ([]entity.Classes, error)
+	CreateWithTransaction(tx *gorm.DB, attributes map[string]interface{}) (entity.Classes, error)
 }
 
 type classesRepository struct {
@@ -31,7 +33,7 @@ func (c *classesRepository) TakeByConditions(
 ) (entity.Classes, error) {
 	var class entity.Classes
 	cdb := c.DB.WithContext(ctx)
-	err := cdb.Model(&class).Where(conditions).Take(&entity.Classes{}).Error
+	err := cdb.Where(conditions).Take(&class).Error
 	return class, err
 }
 
@@ -48,5 +50,31 @@ func (c *classesRepository) Create(
 
 	cdb := c.DB.WithContext(ctx)
 	err = cdb.Create(&class).Error
+	return class, err
+}
+
+// en: FindByConditions function to find classes by conditions
+func (c *classesRepository) FindByConditions(
+	ctx context.Context,
+	conditions map[string]interface{},
+) ([]entity.Classes, error) {
+	var classes []entity.Classes
+	cdb := c.DB.WithContext(ctx)
+	err := cdb.Where(conditions).Find(&classes).Error
+	return classes, err
+}
+
+// en: CreateWithTransaction function to create a new class with given attributes within a transaction
+func (c *classesRepository) CreateWithTransaction(
+	tx *gorm.DB,
+	attributes map[string]interface{},
+) (entity.Classes, error) {
+	var class entity.Classes
+	err := utils.MapToStruct(attributes, &class)
+	if err != nil {
+		return entity.Classes{}, err
+	}
+
+	err = tx.Create(&class).Error
 	return class, err
 }
