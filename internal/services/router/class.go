@@ -11,5 +11,8 @@ func BindClassRoutes(
 	handler *class.HTTPHandler,
 ) {
 	router.GET("/", handler.GetAllClasses)
+	router.GET("/:id", handler.GetClassDetails)
 	router.POST("/", handler.PostNewClass)
+	router.PUT("/:id", handler.PutClassInfo)
+	router.DELETE("/:id", handler.DeleteClass)
 }
