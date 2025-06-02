@@ -20,6 +20,7 @@ func NewGraphqlSchema(
 			repositories.TrainersContainer.TrainersRepository,
 		),
 		output.NewTrainerType(),
+		output.NewMemberType(),
 	} {
 		outputTypes[graphqlType.Name()] = graphqlType
 	}
@@ -45,11 +46,23 @@ func NewGraphqlSchema(
 		Mutation: graphql.NewObject(graphql.ObjectConfig{
 			Name: "Mutation",
 			Fields: graphql.Fields{
-				"post_class": mutation.NewPostClassMutation(
+				"post_new_class": mutation.NewPostNewClassMutation(
 					outputTypes,
 					db,
 					repositories.TrainersContainer.TrainersRepository,
 					repositories.ClassesContainer.ClassesRepository,
+				),
+				"post_new_member": mutation.NewPostNewMemberMutation(
+					outputTypes,
+					db,
+					repositories.MembersContainer.MembersRepository,
+					repositories.MembershipsContainer.MembershipsRepository,
+					repositories.PaymentsContainer.PaymentsRepository,
+				),
+				"post_new_trainer": mutation.NewPostNewTrainerMutation(
+					outputTypes,
+					db,
+					repositories.TrainersContainer.TrainersRepository,
 				),
 			},
 		}),

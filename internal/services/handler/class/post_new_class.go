@@ -8,14 +8,14 @@ import (
 	"github.com/graphql-go/graphql"
 )
 
-func (h *HTTPHandler) PostClass(c *gin.Context) {
+func (h *HTTPHandler) PostNewClass(c *gin.Context) {
 	input, err := h.GetInputsAsMap(c)
 	if err != nil {
 		h.SetGenericErrorResponse(c, err)
 		return
 	}
 
-	validationResult, err := h.Validator.Validate(PostClass, input)
+	validationResult, err := h.Validator.Validate(PostNewClass, input)
 	if err != nil {
 		h.SetInternalErrorResponse(c, err)
 		return
@@ -32,7 +32,7 @@ func (h *HTTPHandler) PostClass(c *gin.Context) {
 		Context:    c,
 		RequestString: `
 			mutation {
-				class: post_class {
+				class: post_new_class {
 					id
 					name
 					trainer {

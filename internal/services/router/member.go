@@ -11,4 +11,5 @@ func BindMemberRoutes(
 	handler *member.HTTPHandler,
 ) {
 	router.GET("/", handler.GetAllMembers)
+	router.POST("/", handler.PostNewMember)
 }

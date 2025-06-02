@@ -6,6 +6,10 @@ import (
 	"github.com/graphql-go/graphql"
 )
 
+const (
+	PostNewTrainer = "trainer/post_new_trainer.json"
+)
+
 type HTTPHandler struct {
 	handler.ApplicationHandler
 	graphql graphql.Schema

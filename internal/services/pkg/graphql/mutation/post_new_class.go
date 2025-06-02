@@ -10,7 +10,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func NewPostClassMutation(
+func NewPostNewClassMutation(
 	types map[string]*graphql.Object,
 	db *gorm.DB,
 	trainersRepository repository.TrainersRepositoryInterface,
@@ -51,7 +51,9 @@ func NewPostClassMutation(
 			if classInputAttributes["max_capacity"] != nil {
 				classAttributes["max_capacity"] = classInputAttributes["max_capacity"].(float64)
 			}
-			classAttributes["description"] = classInputAttributes["description"].(string)
+			if classInputAttributes["description"] != nil {
+				classAttributes["description"] = classInputAttributes["description"].(string)
+			}
 
 			var class entity.Classes
 			var err error

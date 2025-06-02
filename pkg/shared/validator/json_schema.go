@@ -3,6 +3,7 @@ package validator
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 
 	"g-management/pkg/shared/utils"
 
@@ -62,7 +63,13 @@ func (validator *JsonSchemaValidator) loadDirSchemas(path string) error {
 			continue
 		}
 
-		goJsonSchemaPath := "file://" + validator.basePath + schemaPath
+		absPath, err := filepath.Abs(validator.basePath + schemaPath)
+		if err != nil {
+			return err
+		}
+
+		goJsonSchemaPath := "file://" + filepath.ToSlash(absPath)
+		// goJsonSchemaPath := "file://" + validator.basePath + schemaPath
 		var schema *gojsonschema.Schema
 		var schemaExists bool
 		if schema, schemaExists = cachedGoJsonSchemaInstances[goJsonSchemaPath]; !schemaExists {

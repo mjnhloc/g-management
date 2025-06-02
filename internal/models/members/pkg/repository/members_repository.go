@@ -13,6 +13,7 @@ type MembersRepositoryInterface interface {
 	TakeByConditions(ctx context.Context, conditions map[string]interface{}) (entity.Members, error)
 	Create(ctx context.Context, attributes map[string]interface{}) (entity.Members, error)
 	FindByConditions(ctx context.Context, conditions map[string]interface{}) ([]entity.Members, error)
+	CreateWithTransaction(tx *gorm.DB, attributes map[string]interface{}) (entity.Members, error)
 }
 
 type membersRepository struct {
@@ -61,4 +62,19 @@ func (m *membersRepository) FindByConditions(
 	cdb := m.DB.WithContext(ctx)
 	err := cdb.Where(conditions).Find(&members).Error
 	return members, err
+}
+
+// en: CreateWithTransaction function to create a new member with given attributes within a transaction
+func (m *membersRepository) CreateWithTransaction(
+	tx *gorm.DB,
+	attributes map[string]interface{},
+) (entity.Members, error) {
+	var member entity.Members
+	err := utils.MapToStruct(attributes, &member)
+	if err != nil {
+		return entity.Members{}, err
+	}
+
+	err = tx.Create(&member).Error
+	return member, err
 }

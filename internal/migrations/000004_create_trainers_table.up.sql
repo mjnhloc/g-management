@@ -4,8 +4,9 @@ CREATE TABLE `trainers` (
     `email` VARCHAR(50),
     `phone` VARCHAR(15) UNIQUE NOT NULL,
     `specialization` VARCHAR(255),
-    `hired_at` DATE NOT NULL,
+    `hired_at` DATE NOT NULL DEFAULT (CURRENT_DATE),
     `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`)
+    UNIQUE KEY `trainers_UC_1` (`email`, `phone`),
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

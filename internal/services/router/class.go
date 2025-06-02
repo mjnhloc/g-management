@@ -11,5 +11,5 @@ func BindClassRoutes(
 	handler *class.HTTPHandler,
 ) {
 	router.GET("/", handler.GetAllClasses)
-	router.POST("/", handler.PostClass)
+	router.POST("/", handler.PostNewClass)
 }

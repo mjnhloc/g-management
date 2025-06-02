@@ -10,4 +10,6 @@ func BindTrainerRoutes(
 	router *gin.RouterGroup,
 	handler *trainer.HTTPHandler,
 ) {
+	router.GET("/", handler.GetAllTrainers)
+	router.POST("/", handler.PostNewTrainer)
 }
