@@ -2,12 +2,16 @@ package output
 
 import (
 	"g-management/internal/models/members/pkg/entity"
+	"g-management/internal/models/memberships/pkg/repository"
 	"g-management/pkg/shared/utils"
 
 	"github.com/graphql-go/graphql"
 )
 
-func NewMemberType() *graphql.Object {
+func NewMemberType(
+	types map[string]*graphql.Object,
+	membershipsRepository repository.MembershipsRepositoryInterface,
+) *graphql.Object {
 	return graphql.NewObject(graphql.ObjectConfig{
 		Name: "member",
 		Fields: graphql.FieldsThunk(func() graphql.Fields {
@@ -46,6 +50,14 @@ func NewMemberType() *graphql.Object {
 					Type: graphql.Boolean,
 					Resolve: func(params graphql.ResolveParams) (interface{}, error) {
 						return params.Source.(entity.Members).IsActive, nil
+					},
+				},
+				"membership": &graphql.Field{
+					Type: types["membership"],
+					Resolve: func(params graphql.ResolveParams) (interface{}, error) {
+						return membershipsRepository.TakeByConditions(params.Context, map[string]interface{}{
+							"member_id": params.Source.(entity.Members).ID,
+						})
 					},
 				},
 			}

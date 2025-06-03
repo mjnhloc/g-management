@@ -1,4 +1,4 @@
-package class
+package member
 
 import (
 	"net/http"
@@ -10,11 +10,11 @@ import (
 	"github.com/graphql-go/graphql"
 )
 
-func (h *HTTPHandler) GetClassDetails(c *gin.Context) {
-	classID, err := strconv.Atoi(c.Param("id"))
+func (h *HTTPHandler) GetMemberDetails(c *gin.Context) {
+	memberID, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		h.SetBadRequestErrorResponse(c, map[string]string{
-			"id": "Invalid class ID format",
+			"id": "Invalid member ID format",
 		})
 		return
 	}
@@ -22,22 +22,30 @@ func (h *HTTPHandler) GetClassDetails(c *gin.Context) {
 	result := graphql.Do(graphql.Params{
 		Schema: h.graphql,
 		VariableValues: map[string]interface{}{
-			"id": classID,
+			"id": memberID,
 		},
 		Context: c,
 		RequestString: `
 			query ($id: BigInt!) {
-				class: get_class_details (id: $id) {
+				member: get_member_details (id: $id) {
 					id
 					name
-					schedule
-					duration
-					max_capacity
-					description
-					trainer {
+					email
+					phone
+					date_of_birth
+					is_active
+					membership {
 						id
-						name
-						specialization	
+						membership_type
+						start_date
+						end_date
+						payment {
+							id
+							price
+							payment_date
+							payment_method
+							status
+						}
 					}
 				}
 			}

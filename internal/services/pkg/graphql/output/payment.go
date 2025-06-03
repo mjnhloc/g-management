@@ -1,51 +1,50 @@
 package output
 
 import (
-	"g-management/internal/models/trainers/pkg/entity"
-	"g-management/pkg/shared/utils"
+	"g-management/internal/models/payments/pkg/entity"
 
 	"github.com/graphql-go/graphql"
 )
 
-func NewTrainerType() *graphql.Object {
+func NewPaymentType() *graphql.Object {
 	return graphql.NewObject(graphql.ObjectConfig{
-		Name: "trainer",
+		Name: "payment",
 		Fields: graphql.FieldsThunk(func() graphql.Fields {
 			return graphql.Fields{
 				"id": &graphql.Field{
 					Type: BigInt,
 					Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-						return params.Source.(entity.Trainers).ID, nil
+						return params.Source.(entity.Payments).ID, nil
 					},
 				},
-				"name": &graphql.Field{
-					Type: graphql.String,
+				"membership_id": &graphql.Field{
+					Type: BigInt,
 					Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-						return params.Source.(entity.Trainers).Name, nil
+						return params.Source.(entity.Payments).MembershipID, nil
 					},
 				},
-				"email": &graphql.Field{
-					Type: graphql.String,
+				"price": &graphql.Field{
+					Type: BigInt,
 					Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-						return params.Source.(entity.Trainers).Email, nil
+						return params.Source.(entity.Payments).Price, nil
 					},
 				},
-				"phone": &graphql.Field{
+				"payment_date": &graphql.Field{
 					Type: graphql.String,
 					Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-						return params.Source.(entity.Trainers).Phone, nil
+						return params.Source.(entity.Payments).PaymentDate, nil
 					},
 				},
-				"specialization": &graphql.Field{
+				"payment_method": &graphql.Field{
 					Type: graphql.String,
 					Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-						return utils.DerefString(params.Source.(entity.Trainers).Specialization), nil
+						return params.Source.(entity.Payments).PaymentMethod, nil
 					},
 				},
-				"hired_at": &graphql.Field{
+				"status": &graphql.Field{
 					Type: graphql.String,
 					Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-						return params.Source.(entity.Trainers).HiredAt, nil
+						return params.Source.(entity.Payments).Status, nil
 					},
 				},
 			}

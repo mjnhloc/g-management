@@ -7,6 +7,6 @@ CREATE TABLE members (
     `is_active` TINYINT(1) NOT NULL DEFAULT 1,
     `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    PRIMARY KEY (`id`)
-    UNIQUE KEY `members_UC_1` (`email`, `phone`),
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `members_UC_1` (`email`, `phone`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

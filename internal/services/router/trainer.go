@@ -11,5 +11,6 @@ func BindTrainerRoutes(
 	handler *trainer.HTTPHandler,
 ) {
 	router.GET("/", handler.GetAllTrainers)
+	router.GET("/:id", handler.GetTrainerDetails)
 	router.POST("/", handler.PostNewTrainer)
 }

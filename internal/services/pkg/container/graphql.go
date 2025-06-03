@@ -20,7 +20,15 @@ func NewGraphqlSchema(
 			repositories.TrainersContainer.TrainersRepository,
 		),
 		output.NewTrainerType(),
-		output.NewMemberType(),
+		output.NewMemberType(
+			outputTypes,
+			repositories.MembershipsContainer.MembershipsRepository,
+		),
+		output.NewMembershipType(
+			outputTypes,
+			repositories.PaymentsContainer.PaymentsRepository,
+		),
+		output.NewPaymentType(),
 	} {
 		outputTypes[graphqlType.Name()] = graphqlType
 	}
@@ -38,6 +46,18 @@ func NewGraphqlSchema(
 					repositories.MembersContainer.MembersRepository,
 				),
 				"get_all_trainers": query.NewGetAllTrainersQuery(
+					outputTypes,
+					repositories.TrainersContainer.TrainersRepository,
+				),
+				"get_class_details": query.NewGetClassDetailsQuery(
+					outputTypes,
+					repositories.ClassesContainer.ClassesRepository,
+				),
+				"get_member_details": query.NewGetMemberDetailsQuery(
+					outputTypes,
+					repositories.MembersContainer.MembersRepository,
+				),
+				"get_trainer_details": query.NewGetTrainerDetailsQuery(
 					outputTypes,
 					repositories.TrainersContainer.TrainersRepository,
 				),
