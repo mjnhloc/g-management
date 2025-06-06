@@ -1,0 +1,40 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"type": "object",
+	"additionalProperties": false,
+	"properties": {
+		"class": {
+			"type": "object",
+			"additionalProperties": false,
+			"required": ["trainer"],
+			"properties": {
+                "name": {
+                    "type": ["string", "null"]
+                },
+				"trainer": {
+					"type": "object",
+                    "additionalProperties": false,
+                    "required": ["id"],
+                    "properties": {
+                        "id": {
+                            "type": ["integer", "null"]
+                        }
+                    }
+				},
+				"schedule": {
+					"type": ["string", "null"],
+                    "format": "date-time"
+				},
+                "duration": {
+                    "type": ["integer", "null"]
+                },
+                "max_capacity": {
+                    "type": ["integer", "null"]
+                },
+                "description": {
+                    "type": ["string", "null"]
+                }
+			}
+		}
+	}
+}
