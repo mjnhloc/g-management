@@ -239,3 +239,31 @@ func GetSubArrayOrNil(
 		return []map[string]interface{}{}
 	}
 }
+
+func GetOnlyScalarWithouNilValue(
+	inputMap map[string]interface{},
+) map[string]interface{} {
+	newMap := make(map[string]interface{})
+	for k, v := range inputMap {
+		if v == nil {
+			continue
+		}
+
+		switch reflect.ValueOf(v).Type().Kind() {
+		case
+			reflect.Invalid,
+			reflect.Array,
+			reflect.Chan,
+			reflect.Func,
+			reflect.Interface,
+			reflect.Map,
+			reflect.Slice,
+			reflect.Struct:
+			continue
+		default:
+			newMap[k] = v
+		}
+	}
+
+	return newMap
+}

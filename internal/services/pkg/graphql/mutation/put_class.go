@@ -1,6 +1,8 @@
 package mutation
 
 import (
+	"errors"
+	"g-management/internal/models/classes/pkg/entity"
 	"g-management/internal/models/classes/pkg/repository"
 	"g-management/internal/services/pkg/graphql/output"
 	"g-management/pkg/shared/utils"
@@ -11,6 +13,7 @@ import (
 
 func NewPutClassMutation(
 	types map[string]*graphql.Object,
+	db *gorm.DB,
 	classesRepository repository.ClassesRepositoryInterface,
 ) *graphql.Field {
 	return &graphql.Field{
@@ -22,14 +25,18 @@ func NewPutClassMutation(
 			},
 		},
 		Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-			classID := params.Args["id"].(int)
-			classInput := utils.GetSubMap(params.Source, "class")
-			trainerIDPtr := utils.GetSubInteger(classInput, "trainer", "id")
 			updateClassAttributes := map[string]interface{}{}
-			var trainerID int
+			classID := params.Args["id"].(int)
+			updateClassAttributes["id"] = classID
 
+			classInput := utils.GetSubMap(params.Source, "class")
+			if classInput == nil {
+				return nil, errors.New("No class input provided")
+			}
+
+			trainerIDPtr := utils.GetSubInteger(classInput, "trainer", "id")
 			if trainerIDPtr != nil {
-				trainerID = utils.DerefInt(trainerIDPtr)
+				trainerID := utils.DerefInt(trainerIDPtr)
 				_, err := classesRepository.TakeByConditions(params.Context, map[string]interface{}{
 					"id": trainerID,
 				})
@@ -41,6 +48,7 @@ func NewPutClassMutation(
 			}
 
 			classInputAttributes := utils.GetOnlyScalar(classInput)
+
 			if classInputAttributes["name"] != nil {
 				updateClassAttributes["name"] = classInputAttributes["name"].(string)
 			}
@@ -57,14 +65,20 @@ func NewPutClassMutation(
 				updateClassAttributes["description"] = classInputAttributes["description"].(string)
 			}
 
-			class, classErr := classesRepository.TakeByConditions(params.Context, map[string]interface{}{
-				"id": classID,
-			})
-			if classErr != nil && classErr != gorm.ErrRecordNotFound {
-				return nil, classErr
+			var class entity.Classes
+			var err error
+			if err := utils.Transaction(params.Context, db, func(tx *gorm.DB) error {
+				class, err = classesRepository.UpsertWithTransaction(tx, updateClassAttributes)
+				if err != nil {
+					return err
+				}
+
+				return nil
+			}); err != nil {
+				return nil, err
 			}
-			if classErr == gorm.ErrRecordNotFound {
-			}
+
+			return class, nil
 		},
 	}
 }

@@ -86,6 +86,7 @@ func NewGraphqlSchema(
 				),
 				"put_class": mutation.NewPutClassMutation(
 					outputTypes,
+					db,
 					repositories.ClassesContainer.ClassesRepository,
 				),
 			},
