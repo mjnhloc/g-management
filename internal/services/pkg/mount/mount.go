@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"g-management/internal/services/pkg/container"
+	"g-management/internal/services/pkg/container/graphql"
 	"g-management/internal/services/router"
 	"g-management/pkg/shared/validator"
 
@@ -21,7 +22,7 @@ func MountAll(
 		return fmt.Errorf("failed to create a JSON schema validator: %w", err)
 	}
 
-	graphql, err := container.NewGraphqlSchema(repositories, db)
+	graphql, err := graphql.NewGraphqlSchema(repositories, db)
 	if err != nil {
 		return fmt.Errorf("failed to create a new GraphQL schema: %w", err)
 	}

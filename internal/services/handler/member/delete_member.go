@@ -1,4 +1,4 @@
-package class
+package member
 
 import (
 	"net/http"
@@ -10,11 +10,11 @@ import (
 	"github.com/graphql-go/graphql"
 )
 
-func (h *HTTPHandler) DeleteClass(c *gin.Context) {
-	classID, err := strconv.Atoi(c.Param("id"))
+func (h *HTTPHandler) DeleteMember(c *gin.Context) {
+	memberID, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		h.SetBadRequestErrorResponse(c, map[string]string{
-			"id": "Invalid class ID format",
+			"id": "Invalid member ID format",
 		})
 		return
 	}
@@ -22,12 +22,12 @@ func (h *HTTPHandler) DeleteClass(c *gin.Context) {
 	result := graphql.Do(graphql.Params{
 		Schema: h.graphql,
 		VariableValues: map[string]interface{}{
-			"id": classID,
+			"id": memberID,
 		},
 		Context: c,
 		RequestString: `
 			mutation ($id: BigInt!) {
-				delete_class (id: $id) 
+				delete_member (id: $id) 
 			}
 		`,
 	})

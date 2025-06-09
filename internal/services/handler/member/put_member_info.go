@@ -1,4 +1,4 @@
-package class
+package member
 
 import (
 	"net/http"
@@ -10,8 +10,8 @@ import (
 	"github.com/graphql-go/graphql"
 )
 
-func (h *HTTPHandler) PutClassInfo(c *gin.Context) {
-	classID, err := strconv.Atoi(c.Param("id"))
+func (h *HTTPHandler) PutMemberInfo(c *gin.Context) {
+	memberID, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		h.SetBadRequestErrorResponse(c, map[string]string{
 			"id": "Invalid class ID format",
@@ -25,7 +25,7 @@ func (h *HTTPHandler) PutClassInfo(c *gin.Context) {
 		return
 	}
 
-	validationResult, err := h.Validator.Validate(PutClassInfo, input)
+	validationResult, err := h.Validator.Validate(PutMemberInfo, input)
 	if err != nil {
 		h.SetInternalErrorResponse(c, err)
 		return
@@ -39,23 +39,18 @@ func (h *HTTPHandler) PutClassInfo(c *gin.Context) {
 		Schema:     h.graphql,
 		RootObject: input,
 		VariableValues: map[string]interface{}{
-			"id": classID,
+			"id": memberID,
 		},
 		Context: c,
 		RequestString: `
 			mutation ($id: BigInt!) {
-				class: put_class_info (id: $id) {
+				member: put_member_info (id: $id) {
 					id
 					name
-					schedule
-					duration
-					max_capacity
-					description
-					trainer {
-						id
-						name
-						specialization	
-					}
+					email
+					phone
+					date_of_birth
+					is_active
 				}
 			}
 		`,

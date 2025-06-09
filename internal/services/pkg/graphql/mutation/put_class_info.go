@@ -2,6 +2,7 @@ package mutation
 
 import (
 	"errors"
+
 	"g-management/internal/models/classes/pkg/entity"
 	"g-management/internal/models/classes/pkg/repository"
 	"g-management/internal/services/pkg/graphql/output"
@@ -11,7 +12,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func NewPutClassMutation(
+func NewPutClassInfoMutation(
 	types map[string]*graphql.Object,
 	db *gorm.DB,
 	classesRepository repository.ClassesRepositoryInterface,

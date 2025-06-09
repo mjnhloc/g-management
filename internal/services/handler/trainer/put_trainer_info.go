@@ -1,4 +1,4 @@
-package class
+package trainer
 
 import (
 	"net/http"
@@ -10,11 +10,11 @@ import (
 	"github.com/graphql-go/graphql"
 )
 
-func (h *HTTPHandler) PutClassInfo(c *gin.Context) {
-	classID, err := strconv.Atoi(c.Param("id"))
+func (h *HTTPHandler) PutTrainerInfo(c *gin.Context) {
+	trainerID, err := strconv.Atoi(c.Param("trainer_id"))
 	if err != nil {
 		h.SetBadRequestErrorResponse(c, map[string]string{
-			"id": "Invalid class ID format",
+			"id": "Invalid trainer ID format",
 		})
 		return
 	}
@@ -25,37 +25,32 @@ func (h *HTTPHandler) PutClassInfo(c *gin.Context) {
 		return
 	}
 
-	validationResult, err := h.Validator.Validate(PutClassInfo, input)
+	validation, err := h.Validator.Validate(PutTrainerInfo, input)
 	if err != nil {
 		h.SetInternalErrorResponse(c, err)
 		return
 	}
-	if validationResult != nil {
-		h.SetJSONValidationErrorResponse(c, validationResult)
+	if validation != nil {
+		h.SetJSONValidationErrorResponse(c, validation)
 		return
 	}
 
 	result := graphql.Do(graphql.Params{
-		Schema:     h.graphql,
-		RootObject: input,
+		Schema: h.graphql,
 		VariableValues: map[string]interface{}{
-			"id": classID,
+			"id": trainerID,
 		},
-		Context: c,
+		RootObject: input,
+		Context:    c,
 		RequestString: `
 			mutation ($id: BigInt!) {
-				class: put_class_info (id: $id) {
+				trainer: put_trainer_info (id: $id) {
 					id
 					name
-					schedule
-					duration
-					max_capacity
-					description
-					trainer {
-						id
-						name
-						specialization	
-					}
+					email
+					phone
+					specialization
+					hired_at
 				}
 			}
 		`,

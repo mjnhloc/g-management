@@ -2,12 +2,13 @@ package mutation
 
 import (
 	"fmt"
+	"time"
+
 	"g-management/internal/models/members/pkg/entity"
 	membersRepository "g-management/internal/models/members/pkg/repository"
 	membershipsRepository "g-management/internal/models/memberships/pkg/repository"
 	paymentsRepository "g-management/internal/models/payments/pkg/repository"
 	"g-management/pkg/shared/utils"
-	"time"
 
 	"github.com/graphql-go/graphql"
 	"gorm.io/gorm"
@@ -22,7 +23,6 @@ func NewPostNewMemberMutation(
 ) *graphql.Field {
 	return &graphql.Field{
 		Type:        types["member"],
-		Args:        graphql.FieldConfigArgument{},
 		Description: "Create a new member",
 		Resolve: func(params graphql.ResolveParams) (interface{}, error) {
 			// en: handle member attributes
@@ -93,6 +93,7 @@ func NewPostNewMemberMutation(
 
 			var member entity.Members
 			if err := utils.Transaction(params.Context, db, func(tx *gorm.DB) error {
+				memberAttributes["is_active"] = true
 				member, err = membersRepository.CreateWithTransaction(tx, memberAttributes)
 				if err != nil {
 					return err

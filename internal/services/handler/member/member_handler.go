@@ -8,6 +8,7 @@ import (
 
 const (
 	PostNewMember = "member/post_new_member.json"
+	PutMemberInfo = "member/put_member_info.json"
 )
 
 type HTTPHandler struct {

@@ -12,7 +12,6 @@ func NewGetAllClassesQuery(
 ) *graphql.Field {
 	return &graphql.Field{
 		Type:        graphql.NewList(types["class"]),
-		Args:        graphql.FieldConfigArgument{},
 		Description: "Get all classes",
 		Resolve: func(params graphql.ResolveParams) (interface{}, error) {
 			return classesRepository.FindByConditions(params.Context, nil)

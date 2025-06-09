@@ -1,8 +1,9 @@
 package trainer
 
 import (
-	baseDto "g-management/internal/services/pkg/dto"
 	"net/http"
+
+	baseDto "g-management/internal/services/pkg/dto"
 
 	"github.com/gin-gonic/gin"
 	"github.com/graphql-go/graphql"
@@ -30,7 +31,7 @@ func (h *HTTPHandler) PostNewTrainer(c *gin.Context) {
 		RootObject: input,
 		Context:    c,
 		RequestString: `
-			mutatiion {
+			mutation {
 				trainer: post_new_trainer {
 					id
 					name

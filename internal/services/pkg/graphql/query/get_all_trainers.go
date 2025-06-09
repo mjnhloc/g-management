@@ -12,7 +12,6 @@ func NewGetAllTrainersQuery(
 ) *graphql.Field {
 	return &graphql.Field{
 		Type:        graphql.NewList(types["trainer"]),
-		Args:        graphql.FieldConfigArgument{},
 		Description: "Get all trainers",
 		Resolve: func(params graphql.ResolveParams) (interface{}, error) {
 			return trainersRepository.FindByConditions(params.Context, nil)

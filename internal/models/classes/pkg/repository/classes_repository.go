@@ -16,6 +16,7 @@ type ClassesRepositoryInterface interface {
 	FindByConditions(ctx context.Context, conditions map[string]interface{}) ([]entity.Classes, error)
 	CreateWithTransaction(tx *gorm.DB, attributes map[string]interface{}) (entity.Classes, error)
 	UpsertWithTransaction(tx *gorm.DB, attributes map[string]interface{}) (entity.Classes, error)
+	DeleteByConditions(ctx context.Context, conditions map[string]interface{}) error
 }
 
 type classesRepository struct {
@@ -100,4 +101,13 @@ func (c *classesRepository) UpsertWithTransaction(
 	}).Create(&class).Error
 
 	return class, err
+}
+
+// en: DeleteByConditions function to delete classes by conditions
+func (c *classesRepository) DeleteByConditions(
+	ctx context.Context,
+	conditions map[string]interface{},
+) error {
+	cdb := c.DB.WithContext(ctx)
+	return cdb.Where(conditions).Delete(&entity.Classes{}).Error
 }

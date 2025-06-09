@@ -19,7 +19,6 @@ func NewPostNewClassMutation(
 	return &graphql.Field{
 		Type:        types["class"],
 		Description: "Create a new class",
-		Args:        graphql.FieldConfigArgument{},
 		Resolve: func(params graphql.ResolveParams) (interface{}, error) {
 			classAttributes := map[string]interface{}{}
 			trainerIDPtr := utils.GetSubInteger(params.Source, "class", "trainer", "id")
