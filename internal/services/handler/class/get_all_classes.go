@@ -17,10 +17,6 @@ func (h *HTTPHandler) GetAllClasses(c *gin.Context) {
 				classes: get_all_classes {
 					id
 					name
-					trainer_id
-					schedule
-					duration
-					max_capacity
 					description
 				}
 			}

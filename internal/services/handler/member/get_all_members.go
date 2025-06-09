@@ -1,8 +1,9 @@
 package member
 
 import (
-	baseDto "g-management/internal/services/pkg/dto"
 	"net/http"
+
+	baseDto "g-management/internal/services/pkg/dto"
 
 	"github.com/gin-gonic/gin"
 	"github.com/graphql-go/graphql"
@@ -17,10 +18,7 @@ func (h *HTTPHandler) GetAllMembers(c *gin.Context) {
 				members: get_all_members {
 					id
 					name
-					email
 					phone
-					date_of_birth
-					is_active
 				}
 			}
 		`,

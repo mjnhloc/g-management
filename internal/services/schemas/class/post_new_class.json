@@ -7,7 +7,7 @@
 		"class": {
 			"type": "object",
 			"additionalProperties": false,
-			"required": ["trainer"],
+			"required": ["name", "trainer", "schedule", "duration", "max_capacity"],
 			"properties": {
                 "name": {
                     "type": "string"
@@ -33,7 +33,7 @@
                     "type": "integer"
                 },
                 "description": {
-                    "type": "string"
+                    "type": ["string", "null"]
                 }
 			}
 		}

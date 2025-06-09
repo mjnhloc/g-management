@@ -11,4 +11,8 @@ func BindMemberRoutes(
 	handler *member.HTTPHandler,
 ) {
 	router.GET("/", handler.GetAllMembers)
+	router.GET("/:id", handler.GetMemberDetails)
+	router.POST("/", handler.PostNewMember)
+	router.PUT("/:id", handler.PutMemberInfo)
+	router.DELETE("/:id", handler.DeleteMember)
 }

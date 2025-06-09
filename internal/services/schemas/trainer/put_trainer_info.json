@@ -1,0 +1,30 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"type": "object",
+	"additionalProperties": false,
+	"required": ["trainer"],
+	"properties": {
+		"trainer": {
+			"type": "object",
+			"additionalProperties": false,
+			"properties": {
+                "name": {
+                    "type": "string"
+                },
+				"phone": {
+					"type": "string"
+				},
+                "email": {
+                    "type": ["string", "null"]
+                },
+                "specialization": {
+                    "type": ["string", "null"]
+                },
+				"hired_at": {
+					"type": "string",
+					"format": "date"
+				}
+			}
+		}
+	}
+}

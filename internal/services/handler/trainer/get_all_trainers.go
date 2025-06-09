@@ -1,8 +1,9 @@
 package trainer
 
 import (
-	baseDto "g-management/internal/services/pkg/dto"
 	"net/http"
+
+	baseDto "g-management/internal/services/pkg/dto"
 
 	"github.com/gin-gonic/gin"
 	"github.com/graphql-go/graphql"
@@ -17,10 +18,8 @@ func (h *HTTPHandler) GetAllTrainers(c *gin.Context) {
 				trainer: get_all_trainers {
 					id
 					name
-					email
 					phone
 					specialization
-					hired_at
 				}
 			}
 		`,

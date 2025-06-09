@@ -7,6 +7,7 @@ import (
 	"g-management/pkg/shared/utils"
 
 	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 type ClassesRepositoryInterface interface {
@@ -14,6 +15,8 @@ type ClassesRepositoryInterface interface {
 	Create(ctx context.Context, attributes map[string]interface{}) (entity.Classes, error)
 	FindByConditions(ctx context.Context, conditions map[string]interface{}) ([]entity.Classes, error)
 	CreateWithTransaction(tx *gorm.DB, attributes map[string]interface{}) (entity.Classes, error)
+	UpsertWithTransaction(tx *gorm.DB, attributes map[string]interface{}) (entity.Classes, error)
+	DeleteByConditions(ctx context.Context, conditions map[string]interface{}) error
 }
 
 type classesRepository struct {
@@ -77,4 +80,34 @@ func (c *classesRepository) CreateWithTransaction(
 
 	err = tx.Create(&class).Error
 	return class, err
+}
+
+// en: UpsertWithTransaction function to upsert a class with given attributes within a transaction
+func (c *classesRepository) UpsertWithTransaction(
+	tx *gorm.DB,
+	attributes map[string]interface{},
+) (entity.Classes, error) {
+	var class entity.Classes
+	err := utils.MapToStruct(attributes, &class)
+	if err != nil {
+		return entity.Classes{}, err
+	}
+
+	err = tx.Clauses(clause.OnConflict{
+		Columns: []clause.Column{
+			{Name: "id"},
+		},
+		DoUpdates: clause.Assignments(attributes),
+	}).Create(&class).Error
+
+	return class, err
+}
+
+// en: DeleteByConditions function to delete classes by conditions
+func (c *classesRepository) DeleteByConditions(
+	ctx context.Context,
+	conditions map[string]interface{},
+) error {
+	cdb := c.DB.WithContext(ctx)
+	return cdb.Where(conditions).Delete(&entity.Classes{}).Error
 }

@@ -30,7 +30,7 @@ func NewTrainerType() *graphql.Object {
 						return params.Source.(entity.Trainers).Email, nil
 					},
 				},
-				"phone_number": &graphql.Field{
+				"phone": &graphql.Field{
 					Type: graphql.String,
 					Resolve: func(params graphql.ResolveParams) (interface{}, error) {
 						return params.Source.(entity.Trainers).Phone, nil
