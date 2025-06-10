@@ -37,4 +37,15 @@ func main() {
 	}
 
 	defer infrastructure.CloseDB(master)
+	// es, err := elasticsearch.NewDefaultClient()
+	// if err != nil {
+	// 	log.Fatalf("Error creating ES client: %v", err)
+	// }
+
+	// _, err = es.Indices.Create("classes")
+	// if err != nil {
+	// 	log.Fatalf("Cannot create index: %s", err)
+	// }
+
+	// fmt.Println(es.Info())
 }

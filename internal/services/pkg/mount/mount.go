@@ -6,6 +6,7 @@ import (
 	"g-management/internal/services/pkg/container"
 	"g-management/internal/services/pkg/container/graphql"
 	"g-management/internal/services/router"
+	"g-management/pkg/shared/middleware"
 	"g-management/pkg/shared/validator"
 
 	"github.com/gin-gonic/gin"
@@ -28,8 +29,11 @@ func MountAll(
 	}
 
 	routerClass := ginServer.Group("/classes")
+	routerClass.Use(middleware.CheckAuthentication())
 	routerMember := ginServer.Group("/members")
+	routerMember.Use(middleware.CheckAuthentication())
 	routerTrainer := ginServer.Group("/trainers")
+	routerTrainer.Use(middleware.CheckAuthentication())
 
 	handlerContainer := container.NewHandlerContainer(inputValidator, graphql, db)
 

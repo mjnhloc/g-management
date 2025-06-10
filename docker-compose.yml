@@ -27,5 +27,18 @@ services:
       - mysql_data:/var/lib/mysql
       - ./internal/migrations:/docker-entrypoint-initdb.d # runs SQL files on first startup
 
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:9.0.0
+    container_name: g-management-elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+
 volumes:
   mysql_data:
+  es_data:

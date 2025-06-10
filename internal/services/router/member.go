@@ -2,6 +2,7 @@ package router
 
 import (
 	"g-management/internal/services/handler/member"
+	"g-management/pkg/shared/middleware"
 
 	"github.com/gin-gonic/gin"
 )
@@ -11,8 +12,12 @@ func BindMemberRoutes(
 	handler *member.HTTPHandler,
 ) {
 	router.GET("/", handler.GetAllMembers)
-	router.GET("/:id", handler.GetMemberDetails)
-	router.POST("/", handler.PostNewMember)
-	router.PUT("/:id", handler.PutMemberInfo)
-	router.DELETE("/:id", handler.DeleteMember)
+
+	router.Use(middleware.RequireRole("admin"))
+	{
+		router.GET("/:id", handler.GetMemberDetails)
+		router.POST("/", handler.PostNewMember)
+		router.PUT("/:id", handler.PutMemberInfo)
+		router.DELETE("/:id", handler.DeleteMember)
+	}
 }
