@@ -3,11 +3,14 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
 
 	"g-management/internal/services/pkg/container"
+	"g-management/internal/services/pkg/elasticsearch/client"
 	"g-management/internal/services/pkg/mount"
 	"g-management/pkg/infrastructure"
 
+	"github.com/elastic/go-elasticsearch/v9"
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -15,6 +18,15 @@ func main() {
 	db, master, err := infrastructure.NewDatabase()
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)
+	}
+
+	client, err := client.NewClient(elasticsearch.Config{
+		Addresses: []string{
+			os.Getenv("ES_URL"),
+		},
+	})
+	if err != nil {
+		log.Fatalf("Failed to create Elasticsearch client: %v", err)
 	}
 
 	repositories := container.NewRepositoryContainers(db)
@@ -37,15 +49,4 @@ func main() {
 	}
 
 	defer infrastructure.CloseDB(master)
-	// es, err := elasticsearch.NewDefaultClient()
-	// if err != nil {
-	// 	log.Fatalf("Error creating ES client: %v", err)
-	// }
-
-	// _, err = es.Indices.Create("classes")
-	// if err != nil {
-	// 	log.Fatalf("Cannot create index: %s", err)
-	// }
-
-	// fmt.Println(es.Info())
 }
