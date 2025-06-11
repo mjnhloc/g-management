@@ -53,7 +53,7 @@ func CheckAuthentication() gin.HandlerFunc {
 			return
 		}
 
-		sub, subOK := claims["sub"].(string)
+		_, subOK := claims["sub"].(string)
 		iss, issOK := claims["iss"].(string)
 		if !subOK || !issOK {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, dataErrorUnauthorized)
@@ -66,7 +66,6 @@ func CheckAuthentication() gin.HandlerFunc {
 			c.AbortWithStatusJSON(http.StatusUnauthorized, dataErrorUnauthorized)
 			return
 		}
-		c.Set("auth0_user_id", sub)
 
 		middleware := getMiddlewareAuth0(c, auth0Domain, audience)
 		encounteredError := true
@@ -79,13 +78,15 @@ func CheckAuthentication() gin.HandlerFunc {
 		if encounteredError {
 			return
 		}
-		// token := r.Context().Value(jwtmiddleware.ContextKey{}).(*validator.ValidatedClaims)
-		// mapClaims := token.CustomClaims.(*validator.MapClaims)
 
-		// c.Set("user", *mapClaims) // set toàn bộ claims để dùng sau
+		validatedClaims, ok := c.Request.Context().Value(jwtmiddleware.ContextKey{}).(*validator.ValidatedClaims)
+		if !ok {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, dataErrorUnauthorized)
+			return
+		}
 
+		c.Set("user", *validatedClaims) // set toàn bộ claims để dùng sau
 		c.Next()
-		return
 	}
 }
 
@@ -103,21 +104,19 @@ func RequireRole(role string) gin.HandlerFunc {
 			return
 		}
 
-		userClaims := claims.(jwtGo.MapClaims)
-		userRoleUrl := os.Getenv("AUTH0_AUDIENCE") + "/roles"
-		roles, ok := userClaims[userRoleUrl].([]interface{})
-		if !ok {
-			c.AbortWithStatusJSON(http.StatusForbidden, &dto.BaseErrorResponse{
+		customClaims, ok := claims.(*validator.ValidatedClaims).CustomClaims.(*CustomClaims)
+		if !ok || customClaims == nil {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, &dto.BaseErrorResponse{
 				Error: &dto.ErrorResponse{
 					Message: map[string]interface{}{
-						"access_token": "User roles not found, please provide a valid access token",
+						"access_token": "Invalid user claims format",
 					},
 				},
 			})
 			return
 		}
 
-		for _, r := range roles {
+		for _, r := range customClaims.Permissions {
 			if r == role {
 				c.Next()
 				return
@@ -146,6 +145,9 @@ func getMiddlewareAuth0(c *gin.Context, domain, audience string) *jwtmiddleware.
 		validator.RS256,
 		issuerURL.String(),
 		[]string{audience},
+		validator.WithCustomClaims(func() validator.CustomClaims {
+			return &CustomClaims{}
+		}),
 		validator.WithAllowedClockSkew(30*time.Second),
 	)
 	if err != nil {
