@@ -1,0 +1,124 @@
+{
+	// ------------------------------------------------------------
+	// cspell
+	// ------------------------------------------------------------
+	"cSpell.showAutocompleteSuggestions": true,
+	"cSpell.customDictionaries": {
+	  "project-words": {
+		"name": "project-words",
+		"path": "${workspaceRoot}/.vscode/cspell-project.txt",
+		"description": "Words used in this project",
+		"addWords": true
+	  },
+	  "custom": true, // Enable the `custom` dictionary
+	  "internal-terms": false // Disable the `internal-terms` dictionary
+	},
+	
+	// ------------------------------------------------------------
+	// for Golang
+	// https://github.com/golang/vscode-go/blob/master/docs/settings.md
+	// ------------------------------------------------------------
+	"go.alternateTools": {
+		"gopls": "gopls"
+	},
+	// "go.buildFlags": "", // It will be ignored if you use a language server.
+	// "go.buildOnSave": "workspace", // It will be ignored if you use a language server.
+	// "go.buildTags": "", // It will be ignored if you use a language server.
+	"go.coverMode": "default",
+	"go.coverOnSave": true,
+	"go.coverOnSingleTest": true,
+	"go.coverOnSingleTestFile": true,
+	"go.coverOnTestPackage": true,
+	"go.coverShowCounts": false,
+	"go.coverageDecorator": {
+		"coveredBorderColor": "rgba(64,128,128,0.5)", // Color to use for the border of covered code.
+		"coveredGutterStyle": "blockblue", // Allowed Options: blockblue, blockred, blockgreen, blockyellow, slashred, slashgreen, slashblue, slashyellow, verticalred, verticalgreen, verticalblue, verticalyellow
+		"coveredHighlightColor": "rgba(64,128,128,0.2)", // Color in the rgba format to use to highlight covered code.
+		"type": "highlight", // Allowed Options: highlight, gutter
+		"uncoveredGutterStyle": "slashyellow", // Gutter style to indicate covered code. Allowed Options: blockblue, blockred, blockgreen, blockyellow, slashred, slashgreen, slashblue, slashyellow, verticalred, verticalgreen, verticalblue, verticalyellow
+		"uncoveredHighlightColor": "rgba(128,64,64,0.2)" // Color to use for the border of uncovered code.
+	},
+	"go.coverageOptions": "showBothCoveredAndUncoveredCode",
+	"go.delveConfig": {
+		"dlvLoadConfig": {
+			"followPointers": true,
+			"maxVariableRecurse": 1,
+			"maxStringLen": 64,
+			"maxArrayValues": 64,
+			"maxStructFields": -1
+		},
+		"apiVersion": 2,
+		"showGlobalVariables": false,
+		"debugAdapter": "legacy",
+		"substitutePath": []
+	},
+	"go.disableConcurrentTests": false,
+	"go.editorContextMenuCommands": {
+		"addImport": true,
+		"addTags": true,
+		"benchmarkAtCursor": false,
+		"debugTestAtCursor": true,
+		"fillStruct": false,
+		"generateTestForFile": false,
+		"generateTestForFunction": true,
+		"generateTestForPackage": false,
+		"playground": true,
+		"removeTags": false,
+		"testAtCursor": true,
+		"testFile": true,
+		"testPackage": true,
+		"testCoverage": true,
+		"toggleTestFile": true
+	},
+	"go.enableCodeLens": {
+		"runtest": true
+	},
+	// "go.formatFlags": ["-w"], // It will be ignored if you use a language server.
+	// "go.formatTool": "goimports", // It will be ignored if you use a language server.
+	"go.generateTestsFlags": [],
+	// "go.gopath": "/go",
+	// "go.goroot": "/usr/local/go",
+	"go.inferGopath": false,
+	"go.installDependenciesWhenBuilding": false,
+	"go.languageServerFlags": [],
+	"go.lintFlags": [
+		"-c",
+		"/workspaces/dw-nfc-server/.golangci.yaml",
+		"-v"
+		// "--max-same-issues",
+		// "0",
+		// "--max-issues-per-linter",
+		// "0"
+		// "--fast"
+	],
+	"go.lintOnSave": "package",
+	"go.lintTool": "golangci-lint",
+	"go.playground": {
+		"openbrowser": true,
+		"share": true,
+		"run": true
+	},
+	"go.removeTags": {
+		"options": "",
+		"promptForTags": false,
+		"tags": ""
+	},
+	"go.testOnSave": true,
+	"go.testTags": null,
+	"go.testTimeout": "30s",
+	"go.toolsGopath": "/go",
+	"go.toolsManagement.autoUpdate": true,
+	"go.toolsManagement.checkForUpdates": "proxy",
+	"go.useLanguageServer": true,
+	// "go.vetFlags": [], // It will be ignored if you use a language server.
+	// "go.vetOnSave":"package", // It will be ignored if you use a language server.
+	"gopls": {
+		"formatting.gofumpt": true,
+		"ui.completion.usePlaceholders": true,
+		"ui.semanticTokens": true
+	},
+	"[go]": {
+		"editor.formatOnSave": true,
+		"editor.snippetSuggestions": "bottom"
+	}
+}
