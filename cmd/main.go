@@ -6,9 +6,9 @@ import (
 	"os"
 
 	"g-management/internal/services/pkg/container"
-	"g-management/internal/services/pkg/elasticsearch/client"
 	"g-management/internal/services/pkg/mount"
 	"g-management/pkg/infrastructure"
+	"g-management/pkg/services/elasticsearch/client"
 
 	"github.com/elastic/go-elasticsearch/v9"
 	_ "github.com/go-sql-driver/mysql"
@@ -29,7 +29,8 @@ func main() {
 		log.Fatalf("Failed to create Elasticsearch client: %v", err)
 	}
 
-	repositories := container.NewRepositoryContainers(db)
+	repositories := container.NewRepositoryContainers(db, client)
+	services := container.NewServiceContainers(client)
 
 	router := infrastructure.NewServer(db)
 
@@ -38,7 +39,7 @@ func main() {
 		Handler: router,
 	}
 
-	err = mount.MountAll(repositories, router, db)
+	err = mount.MountAll(repositories, services, router, db)
 	if err != nil {
 		log.Fatal("Error happened while mounting all routes: ", "err", err)
 	}

@@ -15,6 +15,7 @@ import (
 
 func MountAll(
 	repositories *container.RepositoryContainers,
+	services *container.ServiceContainers,
 	ginServer *gin.Engine,
 	db *gorm.DB,
 ) error {
@@ -23,7 +24,7 @@ func MountAll(
 		return fmt.Errorf("failed to create a JSON schema validator: %w", err)
 	}
 
-	graphql, err := graphql.NewGraphqlSchema(repositories, db)
+	graphql, err := graphql.NewGraphqlSchema(repositories, services, db)
 	if err != nil {
 		return fmt.Errorf("failed to create a new GraphQL schema: %w", err)
 	}

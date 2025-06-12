@@ -10,6 +10,7 @@ import (
 
 func InitializeMutations(
 	repositories *container.RepositoryContainers,
+	services *container.ServiceContainers,
 	db *gorm.DB,
 	outputTypes map[string]*graphql.Object,
 	typeVoid *graphql.Scalar,
@@ -22,6 +23,7 @@ func InitializeMutations(
 				db,
 				repositories.TrainersContainer.TrainersRepository,
 				repositories.ClassesContainer.ClassesRepository,
+				services.ClassesContainer.ClassesService,
 			),
 			"post_new_member": mutation.NewPostNewMemberMutation(
 				outputTypes,

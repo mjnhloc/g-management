@@ -40,6 +40,10 @@ func InitializeQueries(
 				outputTypes,
 				repositories.TrainersContainer.TrainersRepository,
 			),
+			"get_search_classes": query.NewGetSearchClassesQuery(
+				outputTypes,
+				repositories.ElasticSearchClientRepo,
+			),
 		},
 	})
 }

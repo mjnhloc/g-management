@@ -10,6 +10,7 @@ import (
 
 func NewGraphqlSchema(
 	repositories *container.RepositoryContainers,
+	services *container.ServiceContainers,
 	db *gorm.DB,
 ) (graphql.Schema, error) {
 	outputTypes := make(map[string]*graphql.Object)
@@ -28,6 +29,7 @@ func NewGraphqlSchema(
 			repositories.PaymentsContainer.PaymentsRepository,
 		),
 		output.NewPaymentType(),
+		output.NewClassElasticsearchType(outputTypes),
 	} {
 		outputTypes[graphqlType.Name()] = graphqlType
 	}
@@ -36,6 +38,6 @@ func NewGraphqlSchema(
 
 	return graphql.NewSchema(graphql.SchemaConfig{
 		Query:    InitializeQueries(repositories, db, outputTypes),
-		Mutation: InitializeMutations(repositories, db, outputTypes, voidOutputType),
+		Mutation: InitializeMutations(repositories, services, db, outputTypes, voidOutputType),
 	})
 }

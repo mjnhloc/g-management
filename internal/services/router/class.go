@@ -12,6 +12,7 @@ func BindClassRoutes(
 	handler *class.HTTPHandler,
 ) {
 	router.GET("/", handler.GetAllClasses)
+	router.GET("/search", handler.GetSearchClasses)
 
 	router.Use(middleware.RequireRole("admin"))
 	{

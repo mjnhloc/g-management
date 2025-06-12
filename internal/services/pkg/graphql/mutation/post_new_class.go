@@ -3,6 +3,7 @@ package mutation
 import (
 	"g-management/internal/models/classes/pkg/entity"
 	classesRepo "g-management/internal/models/classes/pkg/repository"
+	classesService "g-management/internal/models/classes/pkg/services"
 	"g-management/internal/models/trainers/pkg/repository"
 	"g-management/pkg/shared/utils"
 
@@ -15,6 +16,7 @@ func NewPostNewClassMutation(
 	db *gorm.DB,
 	trainersRepository repository.TrainersRepositoryInterface,
 	classesRepository classesRepo.ClassesRepositoryInterface,
+	classesService classesService.ClassesServiceInterface,
 ) *graphql.Field {
 	return &graphql.Field{
 		Type:        types["class"],
@@ -58,6 +60,19 @@ func NewPostNewClassMutation(
 			var err error
 			if err := utils.Transaction(params.Context, db, func(tx *gorm.DB) error {
 				class, err = classesRepository.CreateWithTransaction(tx, classAttributes)
+				if err != nil {
+					return err
+				}
+
+				classDoc := entity.ClassDocument{
+					ID:          class.ID,
+					Name:        class.Name,
+					Schedule:    class.Schedule,
+					Description: class.Description,
+				}
+
+				// en: Ensure the class index exists in Elasticsearch and index new class document
+				err = classesService.CheckExistAndIndexNewClassDoc(params.Context, &classDoc)
 				if err != nil {
 					return err
 				}

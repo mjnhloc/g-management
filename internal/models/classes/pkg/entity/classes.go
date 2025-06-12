@@ -14,3 +14,20 @@ type Classes struct {
 	Description *string `gorm:"column:description;type:text" mapstructure:"description"`
 	model.BaseModel
 }
+
+const ClassesIndexNameElasticSearch = "classes"
+
+type ClassDocument struct {
+	ID          int     `json:"id"`
+	Name        string  `json:"name"`
+	Schedule    string  `json:"schedule"`
+	Description *string `json:"description,omitempty"`
+}
+
+func (c *ClassDocument) IndexName() string {
+	return ClassesIndexNameElasticSearch
+}
+
+func (c *ClassDocument) DocumentID() int {
+	return c.ID
+}
