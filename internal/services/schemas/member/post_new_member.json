@@ -1,0 +1,65 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"type": "object",
+	"additionalProperties": false,
+	"required": ["member", "membership", "payment"],
+	"properties": {
+		"member": {
+			"type": "object",
+			"additionalProperties": false,
+			"required": ["name", "phone"],
+			"properties": {
+                "name": {
+                    "type": "string"
+                },
+				"phone": {
+					"type": "string"
+				},
+                "email": {
+                    "type": ["string", "null"]
+                },
+                "date_of_birth": {
+                    "type": ["string", "null"],
+                    "format": "date"
+                }
+			}
+		},
+		"membership": {
+			"type": "object",
+			"additionalProperties": false,
+			"required": ["membership_type"],
+			"properties": {
+				"membership_type": {
+					"type": "string",
+					"enum": ["monthly", "quarter", "annual"]
+				},
+				"start_date": {
+					"type": ["string", "null"],
+					"format": "date"
+				}
+			}
+		},
+		"payment": {
+			"type": "object",
+			"additionalProperties": false,
+			"required": ["price"],
+			"properties": {
+				"price": {
+					"type": "integer"
+				},
+				"payment_date": {
+					"type": "string",
+					"format": "date-time"
+				},
+				"payment_method": {
+					"type": "string",
+					"enum": ["cash", "credit_card", "bank_transfer"]
+				},
+				"status": {
+					"type": "string",
+					"enum": ["refunded", "completed", "failed"]
+				}
+			}
+		}
+	}
+}

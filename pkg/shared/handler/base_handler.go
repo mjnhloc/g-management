@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"errors"
 	"net/http"
-	"os"
 
 	"g-management/pkg/log"
 	"g-management/pkg/shared/validator"
@@ -101,10 +100,6 @@ func (h *BaseHTTPHandler) SetGenericErrorResponse(c *gin.Context, finalError err
 	switch {
 	case errors.As(originalError, &apiError):
 		var debugInfo interface{}
-		if os.Getenv("DW_DEBUG") == "true" {
-			debugInfo = finalError
-		}
-
 		data := baseDto.BaseErrorResponse{
 			Error: &baseDto.ErrorResponse{
 				Message:          apiError.Message(),
@@ -134,14 +129,6 @@ func (h *BaseHTTPHandler) SetGenericErrorResponse(c *gin.Context, finalError err
 
 		c.JSON(http.StatusBadRequest, data)
 		return
-	// case strings.Contains(originalError.Error(), utils.KeycloakInvalidGrant):
-	// 	data := baseDto.BaseErrorResponse{
-	// 		Error: &baseDto.ErrorResponse{
-	// 			Message: originalError.Error(),
-	// 		},
-	// 	}
-	// 	c.JSON(http.StatusBadRequest, data)
-	// 	return
 	default:
 		h.SetInternalErrorResponse(c, finalError)
 		return
@@ -226,17 +213,10 @@ func (h *BaseHTTPHandler) SetCustomErrorAndDetailResponse(c *gin.Context, err er
 
 // This outputs a 500 error with a custom message (contrary to SetGenericErrorResponse that hides the real unhandled error)
 func (h *BaseHTTPHandler) SetInternalErrorResponse(c *gin.Context, err error) {
-	var debugInfo interface{}
-	if os.Getenv("DW_DEBUG") == "true" {
-		debugInfo = err.Error()
-	} else {
-		log.Error(c, "Unexpected error", "error", err)
-	}
-
 	data := &baseDto.BaseErrorResponse{
 		Error: &baseDto.ErrorResponse{
 			Message:          baseUtils.MessageInternalServerError,
-			DebugInformation: debugInfo,
+			DebugInformation: err.Error(),
 		},
 	}
 

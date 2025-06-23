@@ -29,6 +29,6 @@ func (m *memberAttendancesRepository) TakeByConditions(
 ) (entity.MemberAttendances, error) {
 	var memberAttendance entity.MemberAttendances
 	mdb := m.DB.WithContext(ctx)
-	err := mdb.Model(&memberAttendance).Where(conditions).Take(&entity.MemberAttendances{}).Error
+	err := mdb.Where(conditions).Take(&memberAttendance).Error
 	return memberAttendance, err
 }

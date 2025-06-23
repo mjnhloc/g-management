@@ -11,9 +11,9 @@ services:
       DSN: gadmin:gpassword@tcp(mysql:3306)/gdb
     depends_on:
       - mysql
-    volumes:
-      - .:/app
-    command: ["go", "run", "./cmd/main.go"]
+    # volumes:
+    #   - .:/app
+    # command: ["go", "run", "./cmd/main.go"]
 
   mysql:
     image: mysql:8
@@ -25,7 +25,20 @@ services:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
-      # - ${PWD}/internal/migrations:/docker-entrypoint-initdb.d # runs SQL files on first startup
+      - ./internal/migrations:/docker-entrypoint-initdb.d # runs SQL files on first startup
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:9.0.0
+    container_name: g-management-elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
 
 volumes:
   mysql_data:
+  es_data:
