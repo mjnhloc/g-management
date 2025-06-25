@@ -970,7 +970,7 @@ func GetHostAndAppNameFromRtmpUrl(rtmpUrl string) (string, string, error) {
 // en: extract and return domain from http url.
 func GetDomainFromHttpUrl(urlString string) (string, error) {
 	// extract domain if it has scheme.
-	if strings.Contains(urlString, fmt.Sprintf("%s://", DefaultHttpScheme)) || strings.Contains(urlString, fmt.Sprintf("%s://", DefaultHttpsScheme)) {
+	if strings.Contains(urlString, fmt.Sprintf("%s://", DefaultHttpPath)) || strings.Contains(urlString, fmt.Sprintf("%s://", DefaultHttpPath)) {
 		u, err := url.Parse(urlString)
 		if err != nil {
 			return "", err

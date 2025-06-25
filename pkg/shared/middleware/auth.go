@@ -159,7 +159,7 @@ func getMiddlewareAuth0(c *gin.Context, domain, audience string) *jwtmiddleware.
 			if strings.Contains(err.Error(), "token is expired") {
 				c.AbortWithStatusJSON(http.StatusRequestTimeout, &dto.BaseErrorResponse{
 					Error: &dto.ErrorResponse{
-						Message: utils.ErrorTokenExpiredMsgJp,
+						Message: utils.ErrorTokenExpired,
 					},
 				})
 				return

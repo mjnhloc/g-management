@@ -149,45 +149,20 @@ func (validator *JsonSchemaValidator) GetCustomErrorMessage(
 	minValue, minExists := details["min"]
 	if result.Type() == "format" && formatExists {
 		if format == "email" || format == "idn-email" {
-			return utils.ErrorEmailFail
+			return utils.ErrorInputEmail
 		}
 		if format == "password" || format == "strong-password" || format == "auth0-password" {
 			return utils.ErrorPasswordFail
 		}
-		if format == "google_analytics" {
-			return utils.ErrorGAInvalid
-		}
-		if format == "google_tag_manager" {
-			return utils.ErrorGTMInvalid
-		}
-		if format == "string_with_max_length" {
-			return utils.ErrCheckMaxLengthUnder50Characters
-		}
 		if format == "domain" {
-			return utils.ErrInvalidDomain
+			return utils.ErrorDomain
 		}
-		if format == "hiragana" {
-			return utils.ErrorInvalidHiragana
-		}
-	}
-
-	if result.Type() == "required" {
-		return "MSGCM001"
 	}
 
 	if result.Type() == "string_gte" && minExists {
 		if minValue == 1 {
 			return utils.ErrorInputFail // Non-empty string
 		}
-	}
-
-	_, maxExists := details["max"]
-	if result.Type() == "string_lte" && maxExists {
-		return utils.ErrorInputCharacterLimit
-	}
-
-	if result.Type() == maxLengthByte {
-		return utils.ErrorInputByteLimit
 	}
 
 	return utils.ErrorInputFail

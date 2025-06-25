@@ -24,7 +24,6 @@ import (
 
 	aws "github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
-	awsCredentials "github.com/aws/aws-sdk-go-v2/credentials"
 	awsS3Manager "github.com/aws/aws-sdk-go-v2/feature/s3/manager"
 	awsS3 "github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
@@ -142,30 +141,14 @@ func newS3Client(cfg aws.Config, s3Ops awsS3.Options, logger customLogger.AwsLog
 
 func NewS3Repository() (S3RepositoryInterface, error) {
 	var s3Ops awsS3.Options
-
-	var cfg aws.Config
-	var err error
-	if os.Getenv("S3_AUTOCONFIG") == utils.TrueStatusString {
-		cfg, err = config.LoadDefaultConfig(
-			context.Background(),
-			config.WithRegion(os.Getenv("S3_REGION")),
-		)
-	} else {
-		cfg, err = config.LoadDefaultConfig(
-			context.Background(),
-			config.WithRegion(os.Getenv("S3_REGION")),
-			config.WithCredentialsProvider(awsCredentials.NewStaticCredentialsProvider(
-				os.Getenv("S3_CREDENTIALS_ID"),
-				os.Getenv("S3_CREDENTIALS_SECRET"),
-				os.Getenv("S3_CREDENTIALS_TOKEN"),
-			)),
-		)
-		s3Ops = awsS3.Options{
-			BaseEndpoint: aws.String(os.Getenv("S3_ENDPOINT")),
-			UsePathStyle: os.Getenv("S3_FORCE_PATH_STYLE") == utils.TrueStatusString,
-		}
-		s3Ops.EndpointOptions.DisableHTTPS = os.Getenv("S3_DISABLE_SSL") == utils.TrueStatusString
+	cfg, err := config.LoadDefaultConfig(
+		context.Background(),
+	)
+	s3Ops = awsS3.Options{
+		BaseEndpoint: aws.String(os.Getenv("ENDPOINT")),
 	}
+	s3Ops.EndpointOptions.DisableHTTPS = os.Getenv("S3_DISABLE_SSL") == utils.TrueStatusString
+
 	if err != nil {
 		return nil, err
 	}
