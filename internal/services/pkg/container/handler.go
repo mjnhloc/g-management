@@ -26,9 +26,7 @@ func NewHandlerContainer(
 	base.Validator = inputValidator
 
 	classContainer := classHandler.NewHTTPHandler(*base, graphql)
-
 	memberContainer := memberHandler.NewHTTPHandler(*base, graphql)
-
 	trainerContainer := trainerHandler.NewHTTPHandler(*base, graphql)
 
 	return HandlerContainer{

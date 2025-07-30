@@ -1,0 +1,8 @@
+CREATE TABLE member_progress (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    member_id BIGINT NOT NULL,
+    goal VARCHAR(128),
+    value INT,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_progress_member FOREIGN KEY (member_id) REFERENCES members(id)
+);

@@ -25,6 +25,13 @@ func InitializeMutations(
 				repositories.ClassesContainer.ClassesRepository,
 				services.ClassesContainer.ClassesService,
 			),
+			"book_class": mutation.NewBookClassMutation(
+				outputTypes,
+				db,
+				repositories.ClassesContainer.ClassesRepository,
+				repositories.ClassesContainer.WaitlistsRepository,
+				repositories.MemberAttendancesContainer.MemberAttendancesRepository,
+			),
 			"post_new_member": mutation.NewPostNewMemberMutation(
 				outputTypes,
 				db,

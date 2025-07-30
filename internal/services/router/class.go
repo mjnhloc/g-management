@@ -20,5 +20,6 @@ func BindClassRoutes(
 		router.POST("/", handler.PostNewClass)
 		router.PUT("/:id", handler.PutClassInfo)
 		router.DELETE("/:id", handler.DeleteClass)
+		router.POST("/:id/book", middleware.RequireRoles("member"), handler.BookClass)
 	}
 }

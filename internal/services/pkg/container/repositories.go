@@ -13,23 +13,25 @@ import (
 )
 
 type RepositoryContainers struct {
-	ClassesContainer        classesContainer.RepositoryContainer
-	MemberAttendances       memberAttendancesContainer.RepositoryContainer
-	MembersContainer        membersContainer.RepositoryContainer
-	MembershipsContainer    membershipsContainer.RepositoryContainer
-	PaymentsContainer       paymentsContainer.RepositoryContainer
-	TrainersContainer       trainersContainer.RepositoryContainer
-	ElasticSearchClientRepo client.ClientInterface
+	ClassesContainer           classesContainer.RepositoryContainer
+	MemberAttendancesContainer memberAttendancesContainer.RepositoryContainer
+	MembersContainer           membersContainer.RepositoryContainer
+	MembershipsContainer       membershipsContainer.RepositoryContainer
+	PaymentsContainer          paymentsContainer.RepositoryContainer
+	TrainersContainer          trainersContainer.RepositoryContainer
+	WaitlistsContainer         classesContainer.RepositoryContainer
+	ElasticSearchClientRepo    client.ClientInterface
 }
 
 func NewRepositoryContainers(db *gorm.DB, client client.ClientInterface) *RepositoryContainers {
 	return &RepositoryContainers{
-		ClassesContainer:        classesContainer.NewRepositoryContainer(db),
-		MemberAttendances:       memberAttendancesContainer.NewRepositoryContainer(db),
-		MembersContainer:        membersContainer.NewRepositoryContainer(db),
-		MembershipsContainer:    membershipsContainer.NewRepositoryContainer(db),
-		PaymentsContainer:       paymentsContainer.NewRepositoryContainer(db),
-		TrainersContainer:       trainersContainer.NewRepositoryContainer(db),
-		ElasticSearchClientRepo: client,
+		ClassesContainer:           classesContainer.NewRepositoryContainer(db),
+		MemberAttendancesContainer: memberAttendancesContainer.NewRepositoryContainer(db),
+		MembersContainer:           membersContainer.NewRepositoryContainer(db),
+		MembershipsContainer:       membershipsContainer.NewRepositoryContainer(db),
+		PaymentsContainer:          paymentsContainer.NewRepositoryContainer(db),
+		TrainersContainer:          trainersContainer.NewRepositoryContainer(db),
+		WaitlistsContainer:         classesContainer.NewRepositoryContainer(db),
+		ElasticSearchClientRepo:    client,
 	}
 }

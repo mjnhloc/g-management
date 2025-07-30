@@ -178,3 +178,44 @@ func getMiddlewareAuth0(c *gin.Context, domain, audience string) *jwtmiddleware.
 		jwtmiddleware.WithErrorHandler(errorHandler),
 	)
 }
+
+// RequireRoles returns a middleware that allows only users with the given roles
+func RequireRoles(roles ...string) gin.HandlerFunc {
+	roleSet := make(map[string]struct{}, len(roles))
+	for _, r := range roles {
+		roleSet[r] = struct{}{}
+	}
+	return func(c *gin.Context) {
+		userRole, exists := c.Get("user_role")
+		if !exists {
+			c.AbortWithStatusJSON(http.StatusForbidden, gin.H{"error": "Missing user role"})
+			return
+		}
+		roleStr := userRole.(string)
+		if _, ok := roleSet[roleStr]; !ok {
+			c.AbortWithStatusJSON(http.StatusForbidden, gin.H{"error": "Insufficient permissions"})
+			return
+		}
+		c.Next()
+	}
+}
+
+// ExtractUserRoleFromJWT is a helper to extract the user role from JWT claims and set it in the context
+func ExtractUserRoleFromJWT() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		claims, exists := c.Get("claims")
+		if !exists {
+			c.Next()
+			return
+		}
+		m, ok := claims.(map[string]interface{})
+		if !ok {
+			c.Next()
+			return
+		}
+		if role, ok := m["role"].(string); ok {
+			c.Set("user_role", strings.ToLower(role))
+		}
+		c.Next()
+	}
+}

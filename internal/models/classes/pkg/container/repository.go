@@ -7,11 +7,13 @@ import (
 )
 
 type RepositoryContainer struct {
-	ClassesRepository repository.ClassesRepositoryInterface
+	ClassesRepository   repository.ClassesRepositoryInterface
+	WaitlistsRepository repository.WaitlistsRepositoryInterface
 }
 
 func NewRepositoryContainer(db *gorm.DB) RepositoryContainer {
 	return RepositoryContainer{
-		ClassesRepository: repository.NewClassesRepository(db),
+		ClassesRepository:   repository.NewClassesRepository(db),
+		WaitlistsRepository: repository.NewWaitlistsRepository(db),
 	}
 }
